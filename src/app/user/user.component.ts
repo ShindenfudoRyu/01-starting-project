@@ -1,5 +1,4 @@
-import { Component, computed, Input, input } from '@angular/core';
-import { DUMMY_USERS } from '../dummy-users';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-user',
@@ -9,15 +8,16 @@ import { DUMMY_USERS } from '../dummy-users';
   styleUrl: './user.component.css',
 })
 export class UserComponent {
-  // @Input({ required: true }) name!: string;
-  // @Input({ required: true }) avatar!: string;
-  name = input.required<string>();
-  avatar = input.required<string>();
+  @Input({required:true}) id!:string;
+  @Input({ required: true }) name!: string;
+  @Input({ required: true }) avatar!: string;
+  @Output() select = new EventEmitter(); // custome property to emit custom values to the parent
 
-  imagePath = computed(() => 'assets/users/' + this.avatar());
-  // get imagePath() {
-  //   return 'assets/users/' + this.avatar();
-  // }
+  get imagePath() {
+    return 'assets/users/' + this.avatar;
+  }
 
-  onSelectUser() {}
+  onSelectUser() {
+    this.select.emit(this.id);
+  }
 }
